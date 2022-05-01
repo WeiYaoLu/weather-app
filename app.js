@@ -1,8 +1,10 @@
 let API_KEY = 'd4c96df2b522411b359a525169d3843e';
+//class to store weather API data
 const wData = (name, temp, weather, windspeed, humidity) => {
     return { name, temp, weather, windspeed, humidity };
 }
 
+//gets weather based on user input
 async function getWeather(location) {
     console.log(location);
     const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${location}&APPID=${API_KEY}`, { mode: 'cors' });
@@ -11,6 +13,7 @@ async function getWeather(location) {
     updateDOM(data);
 }
 
+//gets weather based on geolocation onstart
 async function getWeatherLocation(lat,long){
     const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${API_KEY}`);
     const weatherData = await response.json();
@@ -18,6 +21,7 @@ async function getWeatherLocation(lat,long){
     updateDOM(data);
 }
 
+//grabs data from the JSON
 function parseJson(weatherData) {
     console.log(weatherData);
     let name = weatherData['name'];
@@ -29,6 +33,7 @@ function parseJson(weatherData) {
     return data;
 }
 
+//module to give the button the search effect
 const SearchListener = (() => {
     const search = document.getElementById('search');
     const searchBtn = document.getElementById('addButton');
@@ -41,41 +46,51 @@ const SearchListener = (() => {
     return searchBtn.addEventListener('click', searchLocation);
 })();
 
+//creates the div to display all the data and removes preexisting 
 function updateDOM(data) {
     removeDOM();
+
     console.log(data);
     const container = document.querySelector('.container');
-    console.log(container);
+
     const display = document.createElement('div');
     display.classList.add('display');
+
     const name = document.createElement('div');
+    name.textContent = data.name;
+    display.appendChild(name);
 
     const temp = document.createElement('h1');
     temp.classList.add('temp');
-    const weather = document.createElement('div');
-    const windspeed = document.createElement('div');
-    const humidity = document.createElement('div');
-    name.textContent = data.name;
     temp.textContent = Math.round(data.temp - 273.15) + "°C";
+    display.appendChild(temp);
+
+    const weather = document.createElement('div');
     weather.textContent = "Weather: " + data.weather.main;
+    display.appendChild(weather);
+
+
+    const windspeed = document.createElement('div');
     windspeed.textContent = "Wind Speed: " + data.windspeed + "mph";
+    display.appendChild(windspeed);
+
+
+    const humidity = document.createElement('div');
     humidity.textContent = "Humidity: " + data.humidity + "%";
+    display.appendChild(humidity);
 
     container.append(display);
-    display.appendChild(name);
-    display.appendChild(temp);
-    display.appendChild(weather);
-    display.appendChild(windspeed);
-    display.appendChild(humidity);
 
 }
 
+//remove previously existing weather
 const removeDOM = () => {
     const container = document.querySelector('.container');
     const display = document.querySelector('.display');
     container.removeChild(display);
 }
 
+//gets location of user
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition);
@@ -85,10 +100,12 @@ function getLocation() {
     }
 }
 
+//on success, callback function for getLocation
 function showPosition(position) {
     getWeatherLocation(position.coords.latitude,position.coords.longitude);
 }
 
+//when the page is loaded, asks for location
 window.onload = () => {
     getLocation();
 };
