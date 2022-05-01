@@ -1,5 +1,5 @@
 let API_KEY = 'd4c96df2b522411b359a525169d3843e';
-//class to store weather API data
+//factory function to store weather API data
 const wData = (name, temp, weather, windspeed, humidity) => {
     return { name, temp, weather, windspeed, humidity };
 }
@@ -7,6 +7,7 @@ const wData = (name, temp, weather, windspeed, humidity) => {
 //gets weather based on user input
 async function getWeather(location) {
     console.log(location);
+    //fetchs the API data then promises to convert it to JS object
     const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${location}&APPID=${API_KEY}`, { mode: 'cors' });
     const weatherData = await response.json();
     let data = parseJson(weatherData);
@@ -80,7 +81,6 @@ function updateDOM(data) {
     display.appendChild(humidity);
 
     container.append(display);
-
 }
 
 //remove previously existing weather
@@ -93,11 +93,13 @@ const removeDOM = () => {
 //gets location of user
 function getLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-        const display = document.querySelector('.display');
-        display.textContent = "Geolocation is not supported by this browser or is disabled.";
+        navigator.geolocation.getCurrentPosition(showPosition,noGeo);
     }
+}
+
+function noGeo(){
+    const display = document.querySelector('.display');
+    display.textContent = "Geolocation disabled or is not supported by the browser";
 }
 
 //on success, callback function for getLocation
@@ -108,4 +110,4 @@ function showPosition(position) {
 //when the page is loaded, asks for location
 window.onload = () => {
     getLocation();
-};
+}
