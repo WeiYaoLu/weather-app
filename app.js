@@ -10,7 +10,16 @@ async function getWeather(location) {
     let data = parseJson(weatherData);
     updateDOM(data);
 }
+
+async function getWeatherLocation(lat,long){
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${API_KEY}`);
+    const weatherData = await response.json();
+    let data = parseJson(weatherData);
+    updateDOM(data);
+}
+
 function parseJson(weatherData) {
+    console.log(weatherData);
     let name = weatherData['name'];
     let temp = weatherData['main']['temp'];
     let humidity = weatherData['main']['humidity'];
@@ -40,7 +49,7 @@ function updateDOM(data) {
     const display = document.createElement('div');
     display.classList.add('display');
     const name = document.createElement('div');
-    
+
     const temp = document.createElement('h1');
     temp.classList.add('temp');
     const weather = document.createElement('div');
@@ -67,4 +76,19 @@ const removeDOM = () => {
     container.removeChild(display);
 }
 
-getWeather('Oakland');
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        const display = document.querySelector('.display');
+        display.textContent = "Geolocation is not supported by this browser or is disabled.";
+    }
+}
+
+function showPosition(position) {
+    getWeatherLocation(position.coords.latitude,position.coords.longitude);
+}
+
+window.onload = () => {
+    getLocation();
+};
