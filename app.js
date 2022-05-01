@@ -41,7 +41,7 @@ function updateDOM(data) {
     display.classList.add('display');
     const name = document.createElement('div');
     
-    const temp = document.createElement('div');
+    const temp = document.createElement('h1');
     temp.classList.add('temp');
     const weather = document.createElement('div');
     const windspeed = document.createElement('div');
