@@ -1,6 +1,6 @@
 let API_KEY = 'd4c96df2b522411b359a525169d3843e';
-const wData = (name,temp, weather,windspeed,humidity) => {
-    return {name,temp, weather,windspeed,humidity};
+const wData = (name, temp, weather, windspeed, humidity) => {
+    return { name, temp, weather, windspeed, humidity };
 }
 
 async function getWeather(location) {
@@ -16,7 +16,7 @@ function parseJson(weatherData) {
     let humidity = weatherData['main']['humidity'];
     let weather = weatherData['weather'][0];
     let windspeed = weatherData['wind']['speed'];
-    const data = wData(name,temp, weather,windspeed,humidity);
+    const data = wData(name, temp, weather, windspeed, humidity);
     return data;
 }
 
@@ -29,36 +29,42 @@ const SearchListener = (() => {
         return (search.value = "");
     };
     console.log(search.value);
-    return searchBtn.addEventListener('click',searchLocation);
+    return searchBtn.addEventListener('click', searchLocation);
 })();
 
-function updateDOM(data){
+function updateDOM(data) {
     removeDOM();
     console.log(data);
-    const display = document.querySelector('.display');
-    const div1 = document.createElement('div');
-    const div2 = document.createElement('div');
-    const div3 = document.createElement('div');
-    const div4 = document.createElement('div');
-    const div5 = document.createElement('div');
-    div1.textContent = data.name; 
-    div2.textContent = "Temperature: " + Math.round(data.temp - 273.15) + "C";
-    div3.textContent = "Weather: " + data.weather.main ;
-    div4.textContent = "Wind Speed: " +  data.windspeed;
-    div5.textContent = "Humidity: " + data.humidity;
+    const container = document.querySelector('.container');
+    console.log(container);
+    const display = document.createElement('div');
+    display.classList.add('display');
+    const name = document.createElement('div');
+    
+    const temp = document.createElement('div');
+    temp.classList.add('temp');
+    const weather = document.createElement('div');
+    const windspeed = document.createElement('div');
+    const humidity = document.createElement('div');
+    name.textContent = data.name;
+    temp.textContent = Math.round(data.temp - 273.15) + "°C";
+    weather.textContent = "Weather: " + data.weather.main;
+    windspeed.textContent = "Wind Speed: " + data.windspeed + "mph";
+    humidity.textContent = "Humidity: " + data.humidity + "%";
 
-    display.appendChild(div1);
-    display.appendChild(div2);
-    display.appendChild(div3);
-    display.appendChild(div4);
-    display.appendChild(div5);
+    container.append(display);
+    display.appendChild(name);
+    display.appendChild(temp);
+    display.appendChild(weather);
+    display.appendChild(windspeed);
+    display.appendChild(humidity);
 
 }
 
 const removeDOM = () => {
-    display = document.querySelector('.display');
-    console.log(display);
-    for(let i = 0; i < display.length; i++){
-
-    }
+    const container = document.querySelector('.container');
+    const display = document.querySelector('.display');
+    container.removeChild(display);
 }
+
+getWeather('Oakland');

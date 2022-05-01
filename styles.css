@@ -1,4 +1,5 @@
 body{
+    font-family: Arial, Helvetica, sans-serif;
     background-color: slategray;
 }
 .container{
@@ -10,6 +11,26 @@ body{
 
 button{
     border-radius: 10px;
+}
+
+.display{
+    padding: 5px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-self: center;
+    background-color: white;
+    border-radius: 15px;
+    margin: 30px;
+}
+
+.temp {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
 }
 
 h1{
