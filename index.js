@@ -8,7 +8,7 @@ const wData = (name, temp, weather, windspeed, humidity) => {
 async function getWeather(location) {
     console.log(location);
     //fetchs the API data then promises to convert it to JS object
-    const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${location}&APPID=${API_KEY}`, { mode: 'cors' });
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&APPID=${API_KEY}`, { mode: 'cors' });
     const weatherData = await response.json();
     let data = parseJson(weatherData);
     updateDOM(data);
