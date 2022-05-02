@@ -16,7 +16,7 @@ async function getWeather(location) {
 
 //gets weather based on geolocation onstart
 async function getWeatherLocation(lat,long){
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${API_KEY}`);
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${API_KEY}`, {mode: 'cors'});
     const weatherData = await response.json();
     let data = parseJson(weatherData);
     updateDOM(data);
